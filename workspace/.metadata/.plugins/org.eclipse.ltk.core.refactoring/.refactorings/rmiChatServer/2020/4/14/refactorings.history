@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy 2 elements to &apos;rmiChatClient/src/rmi.chat.inf&apos;&#x0D;&#x0A;- Original project: &apos;rmiChatServer&apos;&#x0D;&#x0A;- Destination element: &apos;rmiChatClient/src/rmi.chat.inf&apos;&#x0D;&#x0A;- Original elements:&#x0D;&#x0A;     rmi.chat.inf.IChat.java&#x0D;&#x0A;     rmi.chat.inf.IChatClient.java" description="Copy compilation units" destination="=rmiChatClient/src&lt;rmi.chat.inf" element1="/src&lt;rmi.chat.inf{IChat.java" element2="/src&lt;rmi.chat.inf{IChatClient.java" files="0" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1585889945091" units="2" version="1.0"/>
+</session>

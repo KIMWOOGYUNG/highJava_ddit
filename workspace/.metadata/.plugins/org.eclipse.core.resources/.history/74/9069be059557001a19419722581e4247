@@ -1,0 +1,19 @@
+package basic;
+
+/**
+ * 
+ * @author KWG
+ * @version 1.0
+ * 
+ * <p>
+ * 파일명 : JavaDocTest.java <br>
+ * 설   명 : JavaDoc문서 작성 연습을 위한 Interface<br><br> 
+ * 
+ * 수정 이력 <br>
+ * ----------------------------------<br>
+ * 수정 일자 : 2020-02-25<br>
+ * </p>
+ */
+public interface javaDocTest {
+
+}

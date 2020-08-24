@@ -1,0 +1,97 @@
+package basic;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Scanner;
+
+import util.DBUtil;
+
+/*
+	DB�� LPROD ���̺? ���ο� �����͸� �߰��ϱ�
+	
+	lprod_id�� ���� lprod_id �� ���� ū ������ 1 ������ ������ �Ѵ�.
+	lprod_gu�� lprod_nm�� ���� �Է� �޾Ƽ� ����Ѵ�.
+	�׷���, lprod_gu�� �⺻Ű�̱� ������ �����Ͱ� �ߺ��Ǹ� �ٽ� �Է¹޴´�.
+ */
+public class JdbcTest07 {
+
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+		ResultSet rs2 = null;
+		
+		try {
+			/*Class.forName("oracle.jdbc.driver.OracleDriver");
+			conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "KWG", "java");*/
+			conn = DBUtil.getConnection();
+			
+			//lprod_id �� ���� ū �� ���ϱ�
+			String sql = "select max(lprod_id) maxId from lprod"; //alias�� maxId
+			
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery(sql);
+			int maxId = 0;
+			if(rs.next()){	//�����͸� ���������� rs.next�� ������ �ѹ� �������
+				maxId = rs.getInt("maxId");	//()�ȿ� alias �Ǵ� �÷��� //���� ū �� ��������
+			}
+			maxId++; //���� ū �� 1�� ������Ŵ
+			
+			//lprod_gu
+			String lprod_gu = "";
+			do{
+				System.out.println("�з��ڵ� > ");
+				String tempGU = sc.nextLine();
+				
+				String sql2 = "select count(lprod_gu) from lprod where lprod_gu = '" + tempGU + "'";
+				rs = stmt.executeQuery(sql2);
+				if(rs.next()){
+					if(rs.getInt("count(lprod_gu)") != 0){		
+						System.out.println("�ߺ��� lprod_gu�Դϴ�. �ٽ� �Է����ּ���.");
+					}else{
+						lprod_gu = tempGU;
+					}
+				}
+			}while(rs.getInt("count(lprod_gu)") != 0);
+			
+			
+			
+			//lprod_nm
+			System.out.println("�� ǰ �� > ");
+			String lprod_nm = sc.nextLine();
+			
+			String sql3 = "insert into lprod (lprod_id, lprod_gu, lprod_nm)" 
+					+ "values('" + maxId 
+					+ ("', '") + lprod_gu 
+					+ ("', '") + lprod_nm
+					+ ("')");
+			System.out.println(sql3);
+			stmt.executeUpdate(sql3);
+			
+			while(rs.next()){
+				System.out.println("LPROD_ID : " + rs.getString("lprod_id"));
+				System.out.println("LPROD_GU : " + rs.getString("lprod_gu"));
+				System.out.println("LPROD_NM : " + rs.getString("lprod_nm"));				
+				System.out.println("---------------------------------------------------------------------------------");
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		/*} catch (ClassNotFoundException e){
+			e.printStackTrace();*/
+		} finally {
+			if(rs2 != null) try{rs.close();} catch(SQLException e){}
+			if(rs != null) try{rs.close();} catch(SQLException e){}
+			if(stmt != null) try{stmt.close();} catch(SQLException e){}
+			if(conn != null) try{conn.close();} catch(SQLException e){}	
+		}
+		
+
+	}
+
+}

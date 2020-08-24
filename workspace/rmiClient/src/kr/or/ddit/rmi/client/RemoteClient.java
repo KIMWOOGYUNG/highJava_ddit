@@ -1,0 +1,91 @@
+package kr.or.ddit.rmi.client;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.util.ArrayList;
+import java.util.List;
+
+import kr.or.ddit.rmi.inf.RemoteInterface;
+import kr.or.ddit.rmi.vo.FileInfoVO;
+import kr.or.ddit.rmi.vo.TestVO;
+
+//클라이언트쪽의 VO나 인터페이스는  서버의 VO나 인터페이스가 있는 패키지의 구조와 파일명, 그리고 내용까지 동일하게 구성되어 있어야 한다.
+
+public class RemoteClient {
+
+	public static void main(String[] args) {
+		try {
+			//등록된 서버를 찾기 위해 Registry 객체를 생성한다. (서버 접속)
+			Registry reg = LocateRegistry.getRegistry("localhost", 8888);
+			
+			//사용할 객체는 서버에 등록된  Alias로 찾아서 객체를 불러온다.
+			//형식) Registry 객체변수, lookup("객체의 Alias");
+			RemoteInterface inf = (RemoteInterface) reg.lookup("server");
+			
+			//이 이후부터는 불러온 객체의 메서드를 호출해서 아용할 수 있다.
+			int a = inf.doRemotePrint("안녕하세요 클라이언트입니다.");
+			System.out.println("반환값" + a);
+			System.out.println("------------------------------------------------");
+			
+			System.out.println("doPrintList()메서드 호출");
+			List<String> nameList = new ArrayList<String>();
+			nameList.add("김우경");
+			nameList.add("남아름");
+			nameList.add("임수진");
+			nameList.add("박정민");
+			nameList.add("김준우");
+			inf.doPrintList(nameList);
+			System.out.println("------------------------------------------------");
+			
+			System.out.println("doPrintVo()메서드 호출");
+			TestVO test = new TestVO();
+			test.setName("김우경");
+			test.setNum(2020);
+			inf.doPrintVo(test);
+			System.out.println("------------------------------------------------");
+			
+			//파일 전송하기
+			System.out.println("파일 전송 시작...");
+			
+			//전송할 파일의 File객체 생성
+			File file = new File("D:/d_Other/koala.jpg");
+			if(!file.exists()) {
+				System.out.println("전송할 파일이 없습니다. 다시 확인해주세요.");
+				return;
+			}
+			
+			FileInfoVO fVo = new FileInfoVO();
+			fVo.setFileName(file.getName());	//파일 이름 설정
+			
+			//파일의 크기 구하기
+			long fSize = file.length(); 
+			//파일 내용을 읽어와 저장할 byte형 배열 선언 ==> 배열 크기는 파일크기와 같게한다.
+			byte[] data = new byte[(int)fSize]; 
+			try {
+				FileInputStream fin = new FileInputStream(file);
+				fin.read(data);		//파일 내용을 읽어와 byte형 배열에 저장한다.
+				
+				//읽어온 데이터를 FileInfoVO 객체에 셋팅한다.
+				fVo.setFileData(data);
+				
+				//RMI용 파일 전송용 메서드 호출
+				inf.setFile(fVo);
+				System.out.println("파일 전송 끝...");
+			} catch (IOException ee) {
+				ee.printStackTrace();
+			}
+			
+		} catch (RemoteException e) {
+			// TODO: handle exception
+		} catch(NotBoundException e) {
+			
+		}
+
+	}
+
+}

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename type &apos;basic.ThreadThest18&apos; to &apos;ThreadTest18&apos;&#x0D;&#x0A;- Original project: &apos;threadTest&apos;&#x0D;&#x0A;- Original element: &apos;basic.ThreadThest18&apos;&#x0D;&#x0A;- Renamed element: &apos;basic.ThreadTest18&apos;&#x0D;&#x0A;- Update references to refactored element&#x0D;&#x0A;- Update textual occurrences in comments and strings" description="Rename type &apos;ThreadThest18&apos;" flags="589830" id="org.eclipse.jdt.ui.rename.type" input="/src&lt;basic{ThreadThest18.java[ThreadThest18" matchStrategy="1" name="ThreadTest18" qualified="false" references="true" similarDeclarations="false" stamp="1581916765309" textual="false" version="1.0"/>
+</session>

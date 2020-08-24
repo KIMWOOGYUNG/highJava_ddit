@@ -1,0 +1,209 @@
+package basic;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Scanner;
+/*
+	ȸ�� ������ ���ϴ� ���α׷� �����(DB���̺�� : MYMEMBER)
+	
+	�Ʒ��� �޴��� ��� �����Ͻÿ�.(CRUD)����
+	
+	�޴�����)
+	---------------------------------------------
+			== �۾� ���� ==
+		1. �ڷ� �Է� 			--> insert(Create)
+		2. �ڷ� ���� 			--> delete(Delete)
+		3. �ڷ� ����			--> update(Update)
+		4. ��ü �ڷ� ���		--> select(Read)
+	----------------------------------------------
+	
+	- �ڷ��� ������ ȸ��ID�� �Է¹޾� �����Ѵ�.
+	- �ڷḦ �߰��� �� ȸ��ID�� �ߺ� �˻縦 �Ѵ�.
+	
+ */
+
+import util.DBUtil2;
+import util.DButil;
+
+public class MemberInfoTest {
+
+	static Scanner sc = new Scanner(System.in);
+	
+	static Connection conn = null;
+	static Statement stmt = null;
+	static PreparedStatement pstmt = null;
+	static ResultSet rs = null;
+	
+	public static void main(String[] args) {
+		
+		start();
+
+	}
+	
+	static void start(){
+			
+		System.out.println("----------------------");
+		System.out.println("   == �۾� ���� ==       ");
+		System.out.println("   1. �ڷ� �Է� 		  ");
+		System.out.println("   2. �ڷ� ���� 		  ");
+		System.out.println("   3. �ڷ� ���� 		  ");
+		System.out.println("   4. ��ü �ڷ� ��� 	  ");
+		System.out.println("   0. ���α׷� ����  	  ");
+		System.out.println("----------------------");
+		
+		System.out.println(">>");
+		int input = Integer.parseInt(sc.nextLine());
+		
+		switch(input){
+		case 1 : insert(); start();
+		break;
+		case 2 : delete(); start();
+		break;
+		case 3 : update(); start();
+		break;
+		case 4 : select(); start();
+		break;
+		case 0 : System.out.println("���α׷��� �����մϴ�..");
+		break;
+		default : 
+			System.out.println("�ٽ� �Է����ּ���");
+			start();
+		}
+	}
+	
+	static void insert(){
+			
+		try {
+			conn = DButil.getConnection();
+			stmt = conn.createStatement();
+			
+			String mem_id = "";
+			String mem_name = "";
+			String mem_tel = "";
+			String mem_addr = "";
+			
+			//�Է¹ޱ�
+			do{
+				System.out.println("ȸ�� ID�� �Է����ּ��� : ");
+				mem_id = sc.nextLine();
+				
+				String sql = "select count(mem_id) from mymember where mem_id='" + mem_id + "'";
+				rs = stmt.executeQuery(sql);
+				if(rs.next()){
+					if(rs.getInt("count(mem_id)") != 0){
+						System.out.println("�ߺ��� ID �Դϴ�. �ٽ� �Է����ּ���.");
+					}
+				}
+			}while(rs.getInt("count(mem_id)") != 0);
+			
+			System.out.println("ȸ�� �̸��� �Է����ּ��� : ");
+			mem_name = sc.nextLine();
+			System.out.println("ȸ���� ��ȭ��ȣ�� �Է����ּ��� : ");
+			mem_tel = sc.nextLine();
+			System.out.println("ȸ���� �ּҸ� �Է����ּ��� : ");
+			mem_addr = sc.nextLine();
+			
+			String sql = "insert into mymember(mem_id, mem_name, mem_tel, mem_addr)" 
+						+ "values(?,?,?,?)";
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, mem_id);
+			pstmt.setString(2, mem_name);
+			pstmt.setString(3, mem_tel);
+			pstmt.setString(4, mem_addr);
+			
+			pstmt.executeUpdate();
+			
+			System.out.println(mem_id + "ȸ���� �߰��Ǿ���ϴ�.");
+			
+			while(rs.next()){
+				System.out.println("mem_id : " + rs.getString("mem_id"));
+				System.out.println("mem_name : " + rs.getString("mem_name"));
+				System.out.println("mem_tel : " + rs.getString("mem_tel"));
+				System.out.println("mem_addr : " + rs.getString("mem_addr"));
+			}
+			
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally{
+			if(rs != null) try{rs.close();} catch(SQLException e) {}
+			if(pstmt != null) try {pstmt.close();} catch (SQLException e) {}
+			if(stmt != null) try{stmt.close();} catch (SQLException e) {}
+			if(conn != null) try {conn.close();} catch (SQLException e) {}
+		}
+	}
+	
+	static void delete(){
+		
+		System.out.println("�����Ͻ� ID�� �Է����ּ��� : ");
+		String mem_id = sc.nextLine();
+		try {
+			conn = DButil.getConnection();
+			stmt = conn.createStatement();
+			
+			String  sql = "delete from mymember where mem_id = '" + mem_id + "'";
+			stmt.executeUpdate(sql);
+			System.out.println("������ �Ϸ�Ǿ���ϴ�.");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if(stmt != null) try{stmt.close();} catch(SQLException e){}
+			if(conn != null) try{conn.close();} catch(SQLException e){}
+		}
+		
+	}
+	
+	static void update(){
+		
+		System.out.println("�����Ͻ� ID�� �Է����ּ��� : ");
+		String mem_id = sc.nextLine();
+		System.out.println("�����Ͻ� �÷��� �Է����ּ��� : ");
+		System.out.println("(mem_id / mem_name / mem_tel / mem_addr)");
+		String column = sc.nextLine();
+		System.out.println("�����Ͻ� ���� �Է����ּ��� : ");
+		String value = sc.nextLine();
+		try {
+			conn = DButil.getConnection();
+			stmt = conn.createStatement();
+			
+			String sql = "update mymember set " + column + " = '" + value + "' where mem_id = '" + mem_id + "'";
+			stmt.executeUpdate(sql);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally{
+			if(stmt != null) try{stmt.close();} catch(SQLException e){}
+			if(conn != null) try{conn.close();} catch(SQLException e){}
+		}
+		
+		
+	}
+	
+	static void select(){
+		System.out.println("��ü �ڷḦ ����մϴ�...");
+		try {
+			conn = DBUtil2.getConnection();
+			String sql = "select * from mymember";
+			stmt = conn.createStatement();	
+			rs = stmt.executeQuery(sql);
+			
+			while(rs.next()){
+				System.out.print(rs.getString("mem_id") + "\t");
+				System.out.print(rs.getString("mem_name") + "\t");
+				System.out.print(rs.getString("mem_tel") + "\t");
+				System.out.print(rs.getString("mem_addr") + "\t");
+				System.out.println();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally{
+			if(rs != null) try{rs.close();} catch(SQLException e){}
+			if(stmt != null) try{stmt.close();} catch(SQLException e){}
+			if(conn != null) try{conn.close();} catch(SQLException e){}
+		}
+	}
+
+}

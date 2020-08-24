@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kr.or.ddit.zipcode.main.ZipcodeController">
+   <children>
+      <ComboBox fx:id="cbBox" layoutX="96.0" layoutY="36.0" onAction="#cbBoxClick" prefWidth="150.0" />
+      <Button fx:id="btn" layoutX="408.0" layoutY="36.0" mnemonicParsing="false" onAction="#btnClick" text="검색" />
+      <TextField fx:id="txtField" layoutX="260.0" layoutY="36.0" />
+      <TableView fx:id="table" layoutX="21.0" layoutY="79.0" prefHeight="303.0" prefWidth="557.0">
+        <columns>
+          <TableColumn fx:id="zipcode" prefWidth="114.0" text="우편번호" />
+          <TableColumn fx:id="sido" prefWidth="88.0" text="시도" />
+            <TableColumn fx:id="gugun" prefWidth="102.0" text="구군" />
+            <TableColumn fx:id="dong" prefWidth="112.0" text="동" />
+            <TableColumn fx:id="bunji" prefWidth="140.0" text="번지" />
+        </columns>
+      </TableView>
+   </children>
+</AnchorPane>

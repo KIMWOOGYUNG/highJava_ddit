@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.collections.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="854.0" prefWidth="1274.0" style="-fx-background-color: #f5cd89;" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dakar.controller.Controller">
+    <children>
+        <Pane fx:id="search" layoutX="12.0" layoutY="115.0" prefHeight="728.0" prefWidth="1250.0" style="-fx-background-color: #000;">
+            <children>
+                <ScrollPane layoutX="490.0" layoutY="14.0" prefHeight="691.0" prefWidth="746.0">
+                    <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="691.0" prefWidth="742.0" style="-fx-background-color: #f5cd89;">
+                            <children>
+                                <TableView fx:id="table" layoutX="14.0" layoutY="14.0" prefHeight="647.0" prefWidth="700.0" style="-fx-background-color: #ebe4d8;">
+                                    <columns>
+                                        <!--
+                                       <TableColumn prefWidth="37.0" text="ID" />
+                                       <TableColumn prefWidth="155.0" text="TEAM NAME" />
+                                       <TableColumn prefWidth="142.0" text="NAME SURNAME" />
+                                       <TableColumn prefWidth="175.0" text="SPONSORS" />
+                                       <TableColumn prefWidth="103.0" text="RACING CAR" />
+                                       <TableColumn prefWidth="84.0" text="MEMBERS" />
+                                       -->
+                                    </columns>
+                                </TableView>
+                            </children>
+                        </AnchorPane>
+                    </content>
+                </ScrollPane>
+            </children>
+        </Pane>
+        <Pane layoutX="26.0" layoutY="130.0" prefHeight="691.0" prefWidth="454.0" style="-fx-background-color: #f5cd89;">
+         <children>
+             <TextField fx:id="id" layoutX="14.0" layoutY="25.0" prefHeight="25.0" prefWidth="415.0" promptText="ID (only for delete/update)" style="-fx-background-color: #ebe4d8;">
+             <font>
+                 <Font size="18.0" />
+             </font>
+         </TextField>
+                            <TextField fx:id="teamName" layoutX="14.0" layoutY="76.0" prefHeight="25.0" prefWidth="415.0" promptText="Team Name" style="-fx-background-color: #ebe4d8;">
+                                <font>
+                                    <Font size="18.0" />
+                                </font>
+                            </TextField>
+                            <TextField fx:id="nameSurname" layoutX="14.0" layoutY="127.0" prefHeight="25.0" prefWidth="415.0" promptText="Name Surname" style="-fx-background-color: #ebe4d8;">
+                                <font>
+                                    <Font size="18.0" />
+                                </font>
+                            </TextField>
+                            <Button fx:id="create" layoutX="18.0" layoutY="490.0" mnemonicParsing="false" onAction="#create" prefHeight="39.0" prefWidth="184.0" text="CREATE">
+                                <font>
+                                    <Font size="18.0" />
+                                </font>
+                            </Button>
+                            <Button fx:id="read" layoutX="249.0" layoutY="490.0" mnemonicParsing="false" onAction="#searchTeam" prefHeight="39.0" prefWidth="184.0" text="SEARCH">
+                                <font>
+                                    <Font size="18.0" />
+                                </font>
+                            </Button>
+                            <Button fx:id="update" layoutX="18.0" layoutY="540.0" mnemonicParsing="false" onAction="#update" prefHeight="39.0" prefWidth="184.0" text="UPDATE">
+                                <font>
+                                    <Font size="18.0" />
+                                </font>
+                            </Button>
+                            <Button fx:id="delete" layoutX="249.0" layoutY="540.0" mnemonicParsing="false" onAction="#delete" prefHeight="39.0" prefWidth="184.0" text="DELETE">
+                                <font>
+                                    <Font size="18.0" />
+                                </font>
+                            </Button>
+                            <Label fx:id="warning" layoutX="18.0" layoutY="460.0" prefHeight="17.0" prefWidth="415.0">
+                                <font>
+                                    <Font size="18.0" />
+                                </font>
+                            </Label>
+                            <ComboBox fx:id="comboNum" layoutX="18.0" layoutY="425.0" prefHeight="25.0" prefWidth="415.0" promptText="Number of Members">
+                                <items>
+                                    <FXCollections fx:factory="observableArrayList">
+                                        <String fx:value="1" />
+                                        <String fx:value="2" />
+                                        <String fx:value="3" />
+                                        <String fx:value="4" />
+                                        <String fx:value="5" />
+                                    </FXCollections>
+                                </items>
+                            </ComboBox>
+                            <CheckBox fx:id="cbFrance" layoutX="18.0" layoutY="232.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="128.0" text="FRANCE • TV sport" />
+                            <CheckBox fx:id="cbAqua" layoutX="18.0" layoutY="257.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="112.0" text="AQUAFINA" />
+                            <CheckBox fx:id="cbSaudi" layoutX="18.0" layoutY="204.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="157.0" text="Saudi Airlines CATERING" />
+                            <RadioButton fx:id="rbToyota" layoutX="14.0" layoutY="346.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="128.0" text="TOYOTA HILUX">
+                           <toggleGroup>
+                              <ToggleGroup fx:id="racing_car" />
+                           </toggleGroup>
+                        </RadioButton>
+                            <RadioButton fx:id="rbMini" layoutX="14.0" layoutY="370.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="128.0" text="MINI of Nani Rroma" toggleGroup="$racing_car" />
+                            <RadioButton fx:id="rbPeugeot" layoutX="14.0" layoutY="395.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="128.0" selected="true" text="PEUGEOT " toggleGroup="$racing_car" />
+                            <Label layoutX="18.0" layoutY="166.0" prefHeight="27.0" prefWidth="97.0" text="Sponsors:">
+                                <font>
+                                    <Font size="18.0" />
+                                </font>
+                            </Label>
+                            <Label layoutX="18.0" layoutY="299.0" prefHeight="27.0" prefWidth="151.0" text="Racing Car:">
+                                <font>
+                                    <Font size="18.0" />
+                                </font>
+                            </Label>
+
+
+         </children>
+      </Pane>
+        <Text fill="#fcfcfc" layoutX="50.0" layoutY="80.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Dakar 2020 Saudi Arabia" wrappingWidth="864.41015625">
+            <font>
+                <Font name="Showcard Gothic" size="66.0" />
+            </font>
+        </Text>
+      <Pane layoutX="941.0" layoutY="6.0" prefHeight="105.0" prefWidth="320.0" style="-fx-border-color: #000; -fx-border-width: 12;">
+         <children>
+            <Label layoutX="30.0" layoutY="35.0" text="User name:">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="30.0" layoutY="63.0" text="Role:">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="logname" layoutX="115.0" layoutY="37.0" prefHeight="17.0" prefWidth="120.0" textFill="#726f6f">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="role" layoutX="115.0" layoutY="64.0" prefHeight="17.0" prefWidth="120.0" textFill="#726f6f">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Button fx:id="logOut" layoutX="243.0" layoutY="14.0" mnemonicParsing="false" onAction="#logOutDashboard" text="Log out">
+               <font>
+                  <Font size="13.0" />
+               </font></Button>
+         </children>
+      </Pane>
+    </children>
+</Pane>

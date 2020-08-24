@@ -1,0 +1,21 @@
+package basic;
+/*
+	DB의 LPROD테이블에 다음과 같은 데이터를 추가한다.
+	
+	lprod_id : 101, lprod_gu : N101, lprod_nm : 농산물
+	lprod_id : 102, lprod_gu : N102, lprod_nm : 수산물
+	lprod_id : 103, lprod_gu : N103, lprod_nm : 축산물
+ */
+
+public class JdbcTest05 {
+
+	public static void main(String[] args) {
+		Connection conn = null;
+		Statement stmt = null;
+		PreparedStatement pstmt = null;
+		
+		int[] prodIdArr = new int[]{101, 102, 103};
+		String[] lprodGuArr = new String[]{"N101", "N102", "N103"};
+	}
+
+}

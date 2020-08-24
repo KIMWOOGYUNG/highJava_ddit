@@ -1,0 +1,75 @@
+package basic;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Scanner;
+
+/*
+	DB의 LPROD 테이블에 새로운 데이터를 추가하기
+	
+	lprod_id는 현재 lprod_id 중 제일 큰 값보다 1 증가된 값으로 한다.
+	lprod_gu와 lprod_nm은 직접 입력 받아서 사용한다.
+	그런데, lprod_gu는 기본키이기 때문에 데이터가 중복되면 다시 입력받는다.
+ */
+public class JdbcTest07 {
+
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+		ResultSet rs2 = null;
+		
+		try {
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+			conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "KWG", "java");
+			
+			//lprod_id
+			String sql = "select max(lprod_id) from lprod;";
+			
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery(sql);
+			int lprod_id =  rs.getInt("lprod_id") + 1;
+			
+			//lprod_gu
+			System.out.println("분류코드 > ");
+			String tempGU = sc.nextLine();
+			
+			String sql2 = "select lprod_gu from lprod where lprod_gu = '" + tempGU + "';";
+			rs2 = stmt.executeQuery(sql2);
+			
+			if(rs2.getString("lprod_gu") == null){
+				String lprod_gu = tempGU;
+			}
+			
+			
+			//lprod_nm
+			System.out.println("상 품 명 > ");
+			String lprod_nm = sc.nextLine();
+			
+			String sql3 = "insert into lprod (lprod_id, lprod_gu, lprod_nm)" 
+					+ "values('" + lprod_id 
+					+ ("', ") + lprod_gu 
+					+ ("', ") + lprod_nm
+					+ ("')");
+			
+			int cnt = stmt.executeUpdate(sql3);
+			
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e){
+			e.printStackTrace();
+		} finally {
+			if(stmt != null) try{stmt.close();} catch(SQLException e){};
+			if(conn != null) try{conn.close();} catch(SQLException e){};			
+		}
+		
+
+	}
+
+}

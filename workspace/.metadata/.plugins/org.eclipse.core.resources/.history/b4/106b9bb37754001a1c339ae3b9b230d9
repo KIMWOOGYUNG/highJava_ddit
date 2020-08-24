@@ -1,0 +1,35 @@
+package basic;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+/*
+	DB의 LPROD 테이블에 새로운 데이터를 추가하기
+	
+	lprod_id는 현재 lprod_id 중 제일 큰 값보다 1 증가된 값으로 한다.
+	lprod_gu와 lprod_nm은 직접 입력 받아서 사용한다.
+	그런데, lprod_gu는 기본키이기 때문에 데이터가 중복되면 다시 입력받는다.
+ */
+public class JdbcTest07 {
+
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		Connection conn = null;
+		Statement stmt = null;
+		
+		try {
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+			conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "KWG", "java");
+			
+		} catch (SQLException e) {
+			
+		} catch (ClassNotFoundException e){
+			
+		}
+		
+
+	}
+
+}

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kr.or.ddit.prod.main.FxmlProdController">
+   <top>
+      <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <ComboBox fx:id="lprodCombo" onAction="#lprodClick" prefWidth="150.0">
+               <HBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </HBox.margin>
+            </ComboBox>
+            <ComboBox fx:id="prodCombo" onAction="#prodClick" prefWidth="150.0">
+               <HBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </HBox.margin>
+            </ComboBox>
+         </children>
+      </HBox>
+   </top>
+   <center>
+      <TableView fx:id="table" onSort="#tableClick" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+        <columns>
+          <TableColumn fx:id="colId" prefWidth="82.0" text="PROD_ID" />
+          <TableColumn fx:id="colName" prefWidth="93.0" text="PROD_NAME" />
+            <TableColumn fx:id="colLgu" prefWidth="56.0" text="PROD_LGU" />
+            <TableColumn fx:id="colBuyer" prefWidth="60.0" text="PROD_BUYER" />
+            <TableColumn fx:id="colCost" prefWidth="65.0" text="PROD_COST" />
+            <TableColumn fx:id="colPrice" prefWidth="65.0" text="PROD_PRICE" />
+            <TableColumn fx:id="colSale" prefWidth="76.0" text="PROD_SALE" />
+            <TableColumn fx:id="colOutline" prefWidth="117.0" text="PROD_OUTLINE" />
+            <TableColumn fx:id="colDetail" prefWidth="85.0" text="PROD_DETAIL" />
+        </columns>
+         <BorderPane.margin>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </BorderPane.margin>
+      </TableView>
+   </center>
+</BorderPane>

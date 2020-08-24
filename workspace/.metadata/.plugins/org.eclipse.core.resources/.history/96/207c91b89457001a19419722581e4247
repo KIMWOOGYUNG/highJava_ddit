@@ -1,0 +1,10 @@
+package basic;
+
+/**
+ * 
+ * @author KWG
+ *
+ */
+public interface javaDocTest {
+
+}

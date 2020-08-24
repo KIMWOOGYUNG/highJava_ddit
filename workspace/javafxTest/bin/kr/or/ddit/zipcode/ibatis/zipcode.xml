@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+	<!-- 위 부분은 똑같이 써야함 -->
+	
+<sqlMap namespace="zipcode">
+	<select id="searchDong" resultClass="zipVo" parameterClass="String">
+		select * from ziptb where dong like '%$doikhjiung$%'
+	</select>
+	<select id="searchZipcode" resultClass="zipVo" parameterClass="String">
+		select * from ziptb where zipcode like '%$asdfasdf$%'
+	</select>
+</sqlMap>

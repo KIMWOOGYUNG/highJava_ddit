@@ -1,0 +1,14 @@
+package basic;
+
+/**
+ * 
+ * @author KWG
+ * @version 1.0
+ * 
+ * <p>
+ * 파일명 : JavaDocTest.java
+ * </p>
+ */
+public interface javaDocTest {
+
+}

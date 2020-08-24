@@ -1,0 +1,9 @@
+.root{
+    -fx-background-color: antiquewhite;
+}
+.button{
+    -fx-background-color: green;
+}
+.text-area{
+    -fx-background-color: red;
+}

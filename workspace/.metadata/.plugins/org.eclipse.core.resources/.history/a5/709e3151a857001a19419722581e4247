@@ -1,0 +1,222 @@
+package basic;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Scanner;
+/*
+	ȸ�� ������ ���ϴ� ���α׷� �����(DB���̺�� : MYMEMBER)
+	
+	�Ʒ��� �޴��� ��� �����Ͻÿ�.(CRUD)����
+	
+	�޴�����)
+	---------------------------------------------
+			== �۾� ���� ==
+		1. �ڷ� �Է� 			--> insert(Create)
+		2. �ڷ� ���� 			--> delete(Delete)
+		3. �ڷ� ����			--> update(Update)
+		4. ��ü �ڷ� ���		--> select(Read)
+	----------------------------------------------
+	
+	- �ڷ��� ������ ȸ��ID�� �Է¹޾� �����Ѵ�.
+	- �ڷḦ �߰��� �� ȸ��ID�� �ߺ� �˻縦 �Ѵ�.
+	
+ */
+
+import util.DBUtil;
+import util.DBUtil3;
+
+public class MemberInfoTest {
+
+	static Scanner sc = new Scanner(System.in);
+	
+	public static void main(String[] args) {
+		
+		start();
+
+	}
+	
+	public static void start(){
+			
+		System.out.println("----------------------");
+		System.out.println("   == 작업선택 ==       ");
+		System.out.println("   1. 자료입력		  ");
+		System.out.println("   2. 자료삭제 		  ");
+		System.out.println("   3. 자료수정 		  ");
+		System.out.println("   4. 전체 자료 출력 	  ");
+		System.out.println("   0. 프로그램 종료 	  ");
+		System.out.println("----------------------");
+		
+		System.out.println(">>");
+		int input = Integer.parseInt(sc.nextLine());
+		
+		switch(input){
+		case 1 : insert(); start();
+		break;
+		case 2 : delete(); start();
+		break;
+		case 3 : update(); start();
+		break;
+		case 4 : select(); start();
+		break;
+		case 0 : System.out.println("프로그램을 종료합니다..");
+		break;
+		default : 
+			System.out.println("다시 입력해주세요.");
+			start();
+		}
+	}
+	
+	public static void insert(){
+		Connection conn = null;
+		Statement stmt = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+			
+		try {
+			conn = DBUtil.getConnection();
+			stmt = conn.createStatement();
+			
+			String mem_id = "";
+			String mem_name = "";
+			String mem_tel = "";
+			String mem_addr = "";
+			
+			//자료입력
+			do{
+				System.out.println("회원의 ID를 입력하세요 : ");
+				mem_id = sc.nextLine();
+				
+				String sql = "select count(mem_id) from mymember where mem_id='" + mem_id + "'";
+				rs = stmt.executeQuery(sql);
+				if(rs.next()){
+					if(rs.getInt("count(mem_id)") != 0){
+						System.out.println("중복된 아이디입니다 다시 입력해주세요.");
+					}
+				}
+			}while(rs.getInt("count(mem_id)") != 0);
+			
+			System.out.println("회원의 이름 : ");
+			mem_name = sc.nextLine();
+			System.out.println("회원의 전화번호 : ");
+			mem_tel = sc.nextLine();
+			System.out.println("회원의 주소 : ");
+			mem_addr = sc.nextLine();
+			
+			String sql = "insert into mymember(mem_id, mem_name, mem_tel, mem_addr)" 
+						+ "values(?,?,?,?)";
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, mem_id);
+			pstmt.setString(2, mem_name);
+			pstmt.setString(3, mem_tel);
+			pstmt.setString(4, mem_addr);
+			
+			pstmt.executeUpdate();
+			
+			System.out.println(mem_id + "님의 회원정보가 등록되었습니다.");
+			
+			while(rs.next()){
+				System.out.println("mem_id : " + rs.getString("mem_id"));
+				System.out.println("mem_name : " + rs.getString("mem_name"));
+				System.out.println("mem_tel : " + rs.getString("mem_tel"));
+				System.out.println("mem_addr : " + rs.getString("mem_addr"));
+			}
+			
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally{
+			if(rs != null) try{rs.close();} catch(SQLException e) {}
+			if(pstmt != null) try {pstmt.close();} catch (SQLException e) {}
+			if(stmt != null) try{stmt.close();} catch (SQLException e) {}
+			if(conn != null) try {conn.close();} catch (SQLException e) {}
+		}
+	}
+	
+	public static void delete(){
+		Connection conn = null;
+		Statement stmt = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		System.out.println("삭제할 회원 ID를 입력해주세요 : ");
+		String mem_id = sc.nextLine();
+		try {
+			conn = DBUtil.getConnection();
+			stmt = conn.createStatement();
+			
+			String  sql = "delete from mymember where mem_id = '" + mem_id + "'";
+			stmt.executeUpdate(sql);
+			System.out.println("삭제되었습니다.");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if(stmt != null) try{stmt.close();} catch(SQLException e){}
+			if(conn != null) try{conn.close();} catch(SQLException e){}
+		}
+		
+	}
+	
+	public static void update(){
+		Connection conn = null;
+		Statement stmt = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		System.out.println("수정할 회원 ID를 입력해주세요 : ");
+		String mem_id = sc.nextLine();
+		System.out.println("삭제할 컬럼을 입력해주세요 : ");
+		System.out.println("(mem_id / mem_name / mem_tel / mem_addr)");
+		String column = sc.nextLine();
+		System.out.println("수정할 내용을 입력해주세요 : ");
+		String value = sc.nextLine();
+		try {
+			conn = DBUtil.getConnection();
+			stmt = conn.createStatement();
+			
+			String sql = "update mymember set " + column + " = '" + value + "' where mem_id = '" + mem_id + "'";
+			stmt.executeUpdate(sql);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally{
+			if(stmt != null) try{stmt.close();} catch(SQLException e){}
+			if(conn != null) try{conn.close();} catch(SQLException e){}
+		}
+		
+		
+	}
+	
+	public static void select(){
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+		
+		System.out.println("전체 자료 출력...");
+		try {
+			//conn = DBUtil.getConnection();
+			//conn = DBUtil2.getConnection();
+			conn = DBUtil3.getConnection();
+			String sql = "select * from mymember";
+			stmt = conn.createStatement();	
+			rs = stmt.executeQuery(sql);
+			
+			while(rs.next()){
+				System.out.print(rs.getString("mem_id") + "\t");
+				System.out.print(rs.getString("mem_name") + "\t");
+				System.out.print(rs.getString("mem_tel") + "\t");
+				System.out.print(rs.getString("mem_addr") + "\t");
+				System.out.println();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally{
+			if(rs != null) try{rs.close();} catch(SQLException e){}
+			if(stmt != null) try{stmt.close();} catch(SQLException e){}
+			if(conn != null) try{conn.close();} catch(SQLException e){}
+		}
+	}
+
+}

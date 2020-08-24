@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+	<!-- 위 부분은 똑같이 써야함 -->
+	
+<sqlMap namespace="student">
+	<select id="getAllStudent" resultClass="stdVo">
+		select * from student
+	</select>
+	<select id="searchStudent" resultClass="stdVo" parameterClass="String">
+		select * from student where std_name = #std_name#
+	</select>
+	<insert id="insertStudent" parameterClass="stdVo">
+		insert into student(std_name, std_kor, std_eng, std_mat) values(#std_name#, #std_kor#, #std_eng#, #std_mat#)
+	</insert>
+</sqlMap>
